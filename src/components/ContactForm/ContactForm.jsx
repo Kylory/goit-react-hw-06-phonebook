@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { addContact } from '../redux/actions';
 import styles from './ContactForm.module.css';
 
-const ContactForm = props => {
+const ContactForm = ({ contacts, addContact }) => {
   const [stateName, setStateName] = useState('');
   const [stateNumber, setStateNumber] = useState('');
 
@@ -24,15 +26,11 @@ const ContactForm = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (
-      props.contacts &&
-      props.contacts.find(contact => contact.name === stateName)
-    ) {
+    if (contacts && contacts.find(contact => contact.name === stateName)) {
       return alert(stateName + ' is already in contacts');
     }
 
-    //При сабміті форми передає дані в formSubmitHandler(onSubmit), яка в пропсах
-    props.onSubmit({ name: stateName, number: stateNumber });
+    addContact({ name: stateName, number: stateNumber });
     reset();
   };
 
@@ -70,7 +68,17 @@ const ContactForm = props => {
 
 ContactForm.propTypes = {
   contacts: PropTypes.array.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  addContact: PropTypes.func.isRequired,
 };
 
-export default ContactForm;
+const mapStateToProps = state => {
+  return { contacts: state.contacts };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addContact: contact => dispatch(addContact(contact)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
