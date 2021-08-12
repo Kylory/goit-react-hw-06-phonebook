@@ -1,7 +1,3 @@
-// const action = value => ({
-//   type: 'MY_ACTION',
-//   payload: value,
-// });
 import { ADD, DELETE, FILTER } from './actionTypes';
 import shortid from 'shortid';
 

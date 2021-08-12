@@ -24,6 +24,8 @@ ContactsList.propTypes = {
 };
 
 const mapStateToProps = state => {
+  window.localStorage.setItem('contacts', JSON.stringify(state.contacts));
+
   if (state.contacts && state.filter) {
     const normalizedFilter = state.filter.toLowerCase();
     return {
