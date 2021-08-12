@@ -26,6 +26,7 @@ const ContactForm = ({ contacts, addContact }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    
     if (contacts && contacts.find(contact => contact.name === stateName)) {
       return alert(stateName + ' is already in contacts');
     }

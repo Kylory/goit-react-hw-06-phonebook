@@ -24,6 +24,7 @@ ContactsList.propTypes = {
 };
 
 const mapStateToProps = state => {
+  //Пушить актуальний список контаків в LS
   window.localStorage.setItem('contacts', JSON.stringify(state.contacts));
 
   if (state.contacts && state.filter) {
