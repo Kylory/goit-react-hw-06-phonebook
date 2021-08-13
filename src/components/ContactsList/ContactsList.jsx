@@ -18,30 +18,30 @@ const ContactsList = ({ contacts, deleteContact }) => {
   );
 };
 
-ContactsList.propTypes = {
-  contacts: PropTypes.array.isRequired,
-  deleteContact: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = state => {
+const mapStateToProps = ({ contacts, filter }) => {
   //Пушить актуальний список контаків в LS
-  window.localStorage.setItem('contacts', JSON.stringify(state.contacts));
+  window.localStorage.setItem('contacts', JSON.stringify(contacts));
 
-  if (state.contacts && state.filter) {
-    const normalizedFilter = state.filter.toLowerCase();
+  if (contacts && filter) {
+    const normalizedFilter = filter.toLowerCase();
     return {
-      contacts: state.contacts.filter(contact =>
+      contacts: contacts.filter(contact =>
         contact.name.toLowerCase().includes(normalizedFilter),
       ),
     };
   }
-  return { contacts: state.contacts };
+  return { contacts: contacts };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     deleteContact: contact => dispatch(deleteContact(contact)),
   };
+};
+
+ContactsList.propTypes = {
+  contacts: PropTypes.array.isRequired,
+  deleteContact: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactsList);

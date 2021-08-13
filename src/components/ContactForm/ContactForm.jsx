@@ -26,9 +26,13 @@ const ContactForm = ({ contacts, addContact }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    
+
     if (contacts && contacts.find(contact => contact.name === stateName)) {
       return alert(stateName + ' is already in contacts');
+    } else if (!stateName) {
+      return alert('Type some name');
+    } else if (!stateNumber) {
+      return alert('Type some number');
     }
 
     addContact({ name: stateName, number: stateNumber });
@@ -67,11 +71,6 @@ const ContactForm = ({ contacts, addContact }) => {
   );
 };
 
-ContactForm.propTypes = {
-  contacts: PropTypes.array.isRequired,
-  addContact: PropTypes.func.isRequired,
-};
-
 const mapStateToProps = state => {
   return { contacts: state.contacts };
 };
@@ -80,6 +79,11 @@ const mapDispatchToProps = dispatch => {
   return {
     addContact: contact => dispatch(addContact(contact)),
   };
+};
+
+ContactForm.propTypes = {
+  contacts: PropTypes.array.isRequired,
+  addContact: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);

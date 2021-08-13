@@ -1,38 +1,27 @@
-import { createStore, combineReducers } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { combineReducers } from 'redux';
+import { configureStore, createReducer } from '@reduxjs/toolkit';
+import { addContact, deleteContact, filterContacts } from '../redux/actions';
 
-const contactsReducer = (
-  state = JSON.parse(window.localStorage.getItem('contacts')) ?? [],
-  { type, payload },
-) => {
-  switch (type) {
-    case 'form/addContact':
-      return [...state, payload];
+const contactsReducer = createReducer(
+  JSON.parse(window.localStorage.getItem('contacts')) ?? [],
+  {
+    [addContact]: (state, { payload }) => [...state, payload],
+    [deleteContact]: (state, { payload }) =>
+      state.filter(contact => contact.id !== payload),
+  },
+);
 
-    case 'form/deleteContact':
-      const filteredContacts = state.filter(contact => contact.id !== payload);
-      return filteredContacts;
-
-    default:
-      return state;
-  }
-};
-
-const filterReducer = (state = '', { type, payload }) => {
-  switch (type) {
-    case 'contactsList/filterContacts':
-      return payload;
-
-    default:
-      return state;
-  }
-};
+const filterReducer = createReducer('', {
+  [filterContacts]: (_, { payload }) => payload,
+});
 
 const rootReducer = combineReducers({
   contacts: contactsReducer,
   filter: filterReducer,
 });
 
-const store = createStore(rootReducer, composeWithDevTools());
+const store = configureStore({
+  reducer: rootReducer,
+});
 
 export default store;
