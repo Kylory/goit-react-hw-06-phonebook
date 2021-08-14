@@ -39,7 +39,6 @@ export default function ContactForm() {
     }
 
     dispatch(addContact({ name: stateName, number: stateNumber }));
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
     reset();
   };
 
