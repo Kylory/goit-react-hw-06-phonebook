@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addContact } from '../redux/actions';
+import { getContacts } from '../redux/selectors';
 import styles from './ContactForm.module.css';
 
 export default function ContactForm() {
   const [stateName, setStateName] = useState('');
   const [stateNumber, setStateNumber] = useState('');
 
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
 
   const handleChange = e => {
@@ -38,6 +39,7 @@ export default function ContactForm() {
     }
 
     dispatch(addContact({ name: stateName, number: stateNumber }));
+    window.localStorage.setItem('contacts', JSON.stringify(contacts));
     reset();
   };
 

@@ -1,20 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteContact } from '../redux/actions';
+import { getFilteredContacts } from '../redux/selectors';
+// import setToLS from './getFromLS';
 import styles from './ContactsList.module.css';
 
 export default function ContactsList() {
-  const { contacts } = useSelector(state => {
-    if (state.contacts && state.filter) {
-      const normalizedFilter = state.filter.toLowerCase();
-      return {
-        contacts: state.contacts.filter(contact =>
-          contact.name.toLowerCase().includes(normalizedFilter),
-        ),
-      };
-    }
-    return state;
-  });
-
+  const contacts = useSelector(getFilteredContacts);
   //Пушить актуальний список контаків в LS
   window.localStorage.setItem('contacts', JSON.stringify(contacts));
 
